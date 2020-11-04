@@ -1,0 +1,38 @@
+import pandas as pd
+import numpy as np
+
+
+#df= pd.read_csv("BPI_Challenge_Final.csv",encoding='utf-8', index_col=False)
+df= pd.read_csv("BPI_Challenge_Final.csv")
+
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+
+df = df.drop("Unnamed: 0", axis = 1) 
+
+
+df=df.rename(columns={'eventID ': 'EventID', 'case Spend area text': 'ItemArea', 
+                      'case Company': 'Purchaser', 'case Document Type': 'POType', 
+                      'case Sub spend area text': 'ItemAreaDesc', 'case Purchasing Document': 'PODocID', 
+                      'case Vendor': 'VendorReceivedPO', 'case Item Type': 'ItemType', 
+                      'case Item Category': 'ItemPOProcess', 'case Spend classification text': 'ItemClass', 
+                      'case Name': 'Vendor', 'case GR-Based Inv. Verif.': 'InvoiceAfterGR', 'case Item': 'ItemID', 
+                      'case concept:name': 'POItemID', 'case Goods Receipt': 'ThreeWayMatch', 
+                      'event User': 'EventUser', 'event concept:name': 'EventType', 
+                      'event Cumulative net worth (EUR)': 'EventCumNetWoth', 'event time:timestamp': 'Timestamp'})
+
+
+df.columns
+
+df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')
+df.dtypes
+
+df['Date'] = [d.date() for d in df['Timestamp']]
+df['Time'] = [d.time() for d in df['Timestamp']]
+
+
+df.InvoiceAfterGRValue = df.InvoiceAfterGRValue.astype(int)
+df.ThreeWayMatchValue = df.ThreeWayMatchValue.astype(int)
+
+
+df.to_csv("BPI_Challenge_V1.csv", index = False)
